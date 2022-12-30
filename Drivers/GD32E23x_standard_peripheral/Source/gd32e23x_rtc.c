@@ -468,7 +468,6 @@ uint32_t rtc_alarm_subsecond_get(void)
     return ((uint32_t)(RTC_ALRM0SS & RTC_ALRM0SS_SSC));
 }
 
-#if defined(GD32E230)
 /*!
     \brief      enable RTC time-stamp
     \param[in]  edge: specify which edge to detect of time-stamp
@@ -516,7 +515,7 @@ void rtc_timestamp_disable(void)
     /* enable the write protection */
     RTC_WPK = RTC_LOCK_KEY;
 }
-#endif
+
 /*!
     \brief      get RTC timestamp time and date
     \param[in]  none
@@ -731,14 +730,13 @@ void rtc_flag_clear(uint32_t flag)
     RTC_STAT &= (uint32_t)(~flag);  
 }
 
-#if defined(GD32E230)
 /*!
     \brief      configure rtc alternate output source
     \param[in]  source: specify signal to output
                 only one parameter can be selected which is shown as below:
-      \arg        RTC_CALIBRATION_512HZ: when the LSE freqency is 32768Hz and the RTC_PSC 
+      \arg        RTC_CALIBRATION_512HZ: when the LXTAL freqency is 32768Hz and the RTC_PSC 
                                          is the default value, output 512Hz signal
-      \arg        RTC_CALIBRATION_1HZ: when the LSE freqency is 32768Hz and the RTC_PSC 
+      \arg        RTC_CALIBRATION_1HZ: when the LXTAL freqency is 32768Hz and the RTC_PSC 
                                        is the default value, output 512Hz signal
       \arg        RTC_ALARM_HIGH: when the  alarm flag is set, the output pin is high
       \arg        RTC_ALARM_LOW: when the  Alarm flag is set, the output pin is low
@@ -768,7 +766,6 @@ void rtc_alter_output_config(uint32_t source, uint32_t mode)
     /* enable the write protection */
     RTC_WPK = RTC_LOCK_KEY;
 }
-#endif
 
 /*!
     \brief      configure RTC calibration register

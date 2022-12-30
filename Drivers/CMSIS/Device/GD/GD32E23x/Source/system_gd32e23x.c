@@ -45,8 +45,20 @@
 /* select a system clock by uncommenting the following line */
 //#define __SYSTEM_CLOCK_8M_HXTAL              (__HXTAL)
 //#define __SYSTEM_CLOCK_8M_IRC8M              (__IRC8M)
-#define __SYSTEM_CLOCK_72M_PLL_HXTAL         (uint32_t)(72000000)
-//#define __SYSTEM_CLOCK_72M_PLL_IRC8M_DIV2    (uint32_t)(72000000)
+//#define __SYSTEM_CLOCK_72M_PLL_HXTAL         (uint32_t)(72000000)
+#define __SYSTEM_CLOCK_72M_PLL_IRC8M_DIV2    (uint32_t)(72000000)
+
+#define RCU_MODIFY(__delay)     do{                                     \
+                                    volatile uint32_t i;                \
+                                    if(0 != __delay){                   \
+                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV2; \
+                                        for(i=0; i<__delay; i++){       \
+                                        }                               \
+                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV4; \
+                                        for(i=0; i<__delay; i++){       \
+                                        }                               \
+                                    }                                   \
+                                }while(0)
 
 #define SEL_IRC8M       0x00
 #define SEL_HXTAL       0x01
@@ -85,11 +97,14 @@ void SystemInit (void)
     RCU_CTL0 |= RCU_CTL0_IRC8MEN;
     while(0U == (RCU_CTL0 & RCU_CTL0_IRC8MSTB)){
     }
+
+    RCU_MODIFY(0x80);
+    RCU_CFG0 &= ~RCU_CFG0_SCS;
+    RCU_CTL0 &= ~(RCU_CTL0_HXTALEN | RCU_CTL0_CKMEN | RCU_CTL0_PLLEN | RCU_CTL0_HXTALBPS);
     /* reset RCU */
     RCU_CFG0 &= ~(RCU_CFG0_SCS | RCU_CFG0_AHBPSC | RCU_CFG0_APB1PSC | RCU_CFG0_APB2PSC |\
                   RCU_CFG0_ADCPSC | RCU_CFG0_CKOUTSEL | RCU_CFG0_CKOUTDIV | RCU_CFG0_PLLDV);
     RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF | RCU_CFG0_PLLMF4 | RCU_CFG0_PLLDV);
-    RCU_CTL0 &= ~(RCU_CTL0_HXTALEN | RCU_CTL0_CKMEN | RCU_CTL0_PLLEN | RCU_CTL0_HXTALBPS);
     RCU_CFG1 &= ~(RCU_CFG1_PREDV);
     RCU_CFG2 &= ~(RCU_CFG2_USART0SEL | RCU_CFG2_ADCSEL);
     RCU_CFG2 &= ~RCU_CFG2_IRC28MDIV;
@@ -168,7 +183,7 @@ static void system_clock_8m_hxtal(void)
     RCU_CFG0 |= RCU_CKSYSSRC_HXTAL;
     
     /* wait until HXTAL is selected as system clock */
-    while(0U == (RCU_CFG0 & RCU_SCSS_HXTAL)){
+    while(RCU_SCSS_HXTAL != (RCU_CFG0 & RCU_CFG0_SCSS)){
     }
 }
 
@@ -225,7 +240,7 @@ static void system_clock_72m_hxtal(void)
     RCU_CFG0 |= RCU_CKSYSSRC_PLL;
 
     /* wait until PLL is selected as system clock */
-    while(0U == (RCU_CFG0 & RCU_SCSS_PLL)){
+    while(RCU_SCSS_PLL != (RCU_CFG0 & RCU_CFG0_SCSS)){
     }
 }
 
@@ -281,7 +296,7 @@ static void system_clock_72m_irc8m(void)
     RCU_CFG0 |= RCU_CKSYSSRC_PLL;
 
     /* wait until PLL is selected as system clock */
-    while(0U == (RCU_CFG0 & RCU_SCSS_PLL)){
+    while(RCU_SCSS_PLL != (RCU_CFG0 & RCU_CFG0_SCSS)){
     }
 }
 
@@ -306,7 +321,7 @@ static void system_clock_8m_irc8m(void)
     RCU_CFG0 |= RCU_CKSYSSRC_IRC8M;
     
     /* wait until IRC8M is selected as system clock */
-    while(0U != (RCU_CFG0 & RCU_SCSS_IRC8M)){
+    while(RCU_SCSS_IRC8M != (RCU_CFG0 & RCU_CFG0_SCSS)){
     }
 }
 #endif /* __SYSTEM_CLOCK_8M_HXTAL */

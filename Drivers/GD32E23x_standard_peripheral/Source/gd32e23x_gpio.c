@@ -88,7 +88,7 @@ void gpio_deinit(uint32_t gpio_periph)
       \arg        GPIO_PUPD_PULLDOWN:with pull-down resistor
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL 
     \param[out] none
     \retval     none
 */
@@ -132,7 +132,7 @@ void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pull_up_down, u
       \arg        GPIO_OSPEED_50MHZ: output max speed 50MHz
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     none
 */
@@ -168,7 +168,7 @@ void gpio_output_options_set(uint32_t gpio_periph, uint8_t otype, uint32_t speed
       \arg        GPIOx(x = A,B,C,F) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     none
 */
@@ -184,7 +184,7 @@ void gpio_bit_set(uint32_t gpio_periph, uint32_t pin)
       \arg        GPIOx(x = A,B,C,F) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     none
 */
@@ -200,7 +200,7 @@ void gpio_bit_reset(uint32_t gpio_periph, uint32_t pin)
       \arg        GPIOx(x = A,B,C,F) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[in]  bit_value: SET or RESET
       \arg        RESET: clear the port pin
       \arg        SET: set the port pin
@@ -237,7 +237,7 @@ void gpio_port_write(uint32_t gpio_periph, uint16_t data)
       \arg        GPIOx(x = A,B,C,F) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     SET or RESET
 */
@@ -270,7 +270,7 @@ uint16_t gpio_input_port_get(uint32_t gpio_periph)
       \arg        GPIOx(x = A,B,C,F) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     SET or RESET
 */
@@ -352,7 +352,7 @@ void gpio_af_set(uint32_t gpio_periph, uint32_t alt_func_num, uint32_t pin)
       \arg        GPIOx(x = A,B) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     none
 */
@@ -376,7 +376,7 @@ void gpio_pin_lock(uint32_t gpio_periph, uint32_t pin)
       \arg        GPIOx(x = A,B,C,F) 
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
-      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL, PB9/PC13 does not exist on GD32E231 
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
     \param[out] none
     \retval     none
 */

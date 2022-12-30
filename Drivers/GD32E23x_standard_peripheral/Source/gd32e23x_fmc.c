@@ -371,8 +371,8 @@ fmc_state_enum ob_erase(void)
             }
         }else{
             if(FMC_TOERR != fmc_state){
-                /* reset the OBPG bit */
-                FMC_CTL &= ~FMC_CTL_OBPG;
+                /* reset the OBER bit */
+                FMC_CTL &= ~FMC_CTL_OBER;
             }
         }  
     }
@@ -635,6 +635,9 @@ uint16_t ob_write_protection_get(void)
     \param[in]  none
     \param[out] none
     \retval     the value of PLEVEL
+      \arg        OB_OBSTAT_PLEVEL_NO: no security protection
+      \arg        OB_OBSTAT_PLEVEL_LOW: low security protection
+      \arg        OB_OBSTAT_PLEVEL_HIGH: high security protection
 */
 uint32_t ob_obstat_plevel_get(void)
 {

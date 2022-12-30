@@ -167,21 +167,15 @@ void pmu_to_deepsleepmode(uint32_t ldo,uint8_t deepsleepmodecmd)
 
 /*!
     \brief      pmu work at standby mode
-    \param[in]  standbymodecmd:
-                only one parameter can be selected which is shown as below:
-      \arg        WFI_CMD: use WFI command
-      \arg        WFE_CMD: use WFE command
+    \param[in]  none
     \param[out] none
     \retval     none
 */
-void pmu_to_standbymode(uint8_t standbymodecmd)
+void pmu_to_standbymode(void)
 {
     /* switch to IRC8M clock as system clock, close HXTAL */
     RCU_CFG0 &= ~RCU_CFG0_SCS; 
     RCU_CTL0 &= ~RCU_CTL0_HXTALEN;    
-
-    /* set sleepdeep bit of Cortex-M23 system control register */
-    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
     /* set stbmod bit */
     PMU_CTL |= PMU_CTL_STBMOD;
@@ -189,13 +183,16 @@ void pmu_to_standbymode(uint8_t standbymodecmd)
     /* reset wakeup flag */
     PMU_CTL |= PMU_CTL_WURST;
     
-    /* select WFI or WFE command to enter standby mode */
-    if(WFI_CMD == standbymodecmd){
-        __WFI();
-    }else{
-        __WFE();
-        __WFE();
-    }
+    /* set sleepdeep bit of Cortex-M23 system control register */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    REG32( 0xE000E010U ) &= 0x00010004U;
+    REG32( 0xE000E180U )  = 0XFFFFFFFBU;
+    REG32( 0xE000E184U )  = 0XFFFFFFFFU;
+    REG32( 0xE000E188U )  = 0xFFFFFFFFU;
+
+    /* select WFI command to enter standby mode */
+    __WFI();
 }
 
 /*!
@@ -253,27 +250,6 @@ void pmu_backup_write_disable(void)
 }
 
 /*!
-    \brief      clear flag bit
-    \param[in]  flag_clear:
-                one or more parameters can be selected which are shown as below:
-      \arg        PMU_FLAG_RESET_WAKEUP: reset wakeup flag
-      \arg        PMU_FLAG_RESET_STANDBY: reset standby flag
-    \param[out] none
-    \retval     none
-*/
-void pmu_flag_clear(uint32_t flag_clear)
-{
-    if(RESET != (flag_clear & PMU_FLAG_RESET_WAKEUP)){
-        /* reset wakeup flag */
-        PMU_CTL |= PMU_CTL_WURST;
-    }
-    if(RESET != (flag_clear & PMU_FLAG_RESET_STANDBY)){
-        /* reset standby flag */
-        PMU_CTL |= PMU_CTL_STBRST;
-    }
-}
-
-/*!
     \brief      get flag state
     \param[in]  flag:
                 only one parameter can be selected which is shown as below:
@@ -292,4 +268,25 @@ FlagStatus pmu_flag_get(uint32_t flag)
     }
     
     return ret_status;
+}
+
+/*!
+    \brief      clear flag bit
+    \param[in]  flag:
+                one or more parameters can be selected which are shown as below:
+      \arg        PMU_FLAG_RESET_WAKEUP: reset wakeup flag
+      \arg        PMU_FLAG_RESET_STANDBY: reset standby flag
+    \param[out] none
+    \retval     none
+*/
+void pmu_flag_clear(uint32_t flag)
+{
+    if(RESET != (flag & PMU_FLAG_RESET_WAKEUP)){
+        /* reset wakeup flag */
+        PMU_CTL |= PMU_CTL_WURST;
+    }
+    if(RESET != (flag & PMU_FLAG_RESET_STANDBY)){
+        /* reset standby flag */
+        PMU_CTL |= PMU_CTL_STBRST;
+    }
 }

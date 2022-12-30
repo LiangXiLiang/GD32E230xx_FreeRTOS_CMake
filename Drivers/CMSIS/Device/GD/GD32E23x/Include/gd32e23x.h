@@ -49,12 +49,9 @@ OF SUCH DAMAGE.
 #endif /* undefine GD32E23x tip */
 
 /* define GD32E23x device category */
-#if (!defined (GD32E230))&&(!defined (GD32E231))
- #error "Please select GD32E23x device category( GD32E230 or GD32E231 )"
-#endif /* undefine GD32E230 or GD32E231 tip */
-#if (defined (GD32E230))&&(defined (GD32E231))
- #error "Please select one GD32E23x device category( GD32E230 or GD32E231 )"
-#endif /* define GD32E230 and GD32E231 tip */
+#if (!defined (GD32E230))
+ #error "Please select GD32E23x device category( GD32E230 )"
+#endif /* undefine GD32E230 tip */
 
 /* define value of high speed crystal oscillator (HXTAL) in Hz */
 #if !defined  (HXTAL_VALUE)

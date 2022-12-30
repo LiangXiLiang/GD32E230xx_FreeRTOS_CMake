@@ -406,45 +406,6 @@ uint16_t usart_data_receive(uint32_t usart_periph)
 }
 
 /*!
-    \brief      enable auto baud rate detection
-    \param[in]  usart_periph: USARTx(x=0)
-    \param[out] none
-    \retval     none
-*/
-void usart_autobaud_detection_enable(uint32_t usart_periph)
-{
-    USART_CTL1(usart_periph) |= USART_CTL1_ABDEN;
-}
-
-/*!
-    \brief      disable auto baud rate detection
-    \param[in]  usart_periph: USARTx(x=0)
-    \param[out] none
-    \retval     none
-*/
-void usart_autobaud_detection_disable(uint32_t usart_periph)
-{
-    USART_CTL1(usart_periph) &= ~(USART_CTL1_ABDEN);
-}
-
-/*!
-    \brief      configure auto baud rate detection mode
-    \param[in]  usart_periph: USARTx(x=0)
-    \param[in]  abdmod: auto baud rate detection mode
-                only one parameter can be selected which is shown as below:
-      \arg        USART_ABDM_FTOR: falling edge to rising edge measurement
-      \arg        USART_ABDM_FTOF: falling edge to falling edge measurement
-    \param[out] none
-    \retval     none
-*/
-void usart_autobaud_detection_mode_config(uint32_t usart_periph, uint32_t abdmod)
-{
-    /* reset ABDM bits */
-    USART_CTL1(usart_periph) &= ~(USART_CTL1_ABDM);
-    USART_CTL1(usart_periph) |= abdmod;
-}
-
-/*!
     \brief      address of the USART terminal
     \param[in]  usart_periph: USARTx(x=0,1)
     \param[in]  addr: 0x00-0xFF, address of USART terminal
@@ -1123,8 +1084,6 @@ uint8_t usart_receive_fifo_counter_number(uint32_t usart_periph)
       \arg        USART_FLAG_CTS: CTS level
       \arg        USART_FLAG_RT: receiver timeout flag
       \arg        USART_FLAG_EB: end of block flag
-      \arg        USART_FLAG_ABDE: auto baudrate detection error
-      \arg        USART_FLAG_ABD: auto baudrate detection flag
       \arg        USART_FLAG_BSY: busy flag
       \arg        USART_FLAG_AM: address match flag
       \arg        USART_FLAG_SB: send break flag
@@ -1233,7 +1192,6 @@ void usart_interrupt_disable(uint32_t usart_periph, usart_interrupt_enum interru
     \param[in]  usart_periph: USARTx(x=0,1)
     \param[in]  cmdtype: command type
                 only one parameter can be selected which is shown as below:
-      \arg        USART_CMD_ABDCMD: auto baudrate detection command
       \arg        USART_CMD_SBKCMD: send break command
       \arg        USART_CMD_MMCMD: mute mode command
       \arg        USART_CMD_RXFCMD: receive data flush command
