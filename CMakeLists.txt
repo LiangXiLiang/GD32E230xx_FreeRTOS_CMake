@@ -32,6 +32,7 @@ file(GLOB_RECURSE SOURCES "src/*.*" "Drivers/*.*")
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/GD32E230K8_FLASH.ld)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
+add_link_options(-Wl,--no-warn-rwx-segments)
 add_link_options(-mcpu=cortex-m23 -mthumb -mthumb-interwork)
 add_link_options(-specs=nano.specs)
 add_link_options(-T ${LINKER_SCRIPT})
